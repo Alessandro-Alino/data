@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+    <DefaultFaultRule name="default-fault">
+        <Step>
+            <Name>JS-setLoggingVariables</Name>
+        </Step>
+        <Step>
+            <Name>FC-setCORSOnError</Name>
+        </Step>
+    </DefaultFaultRule>
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>FC-securityChecks</Name>
+            </Step>
+            <Step>
+                <Name>AM-setSIEMIndex</Name>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    <Flows>
+        <Flow name="emotional-hook">
+            <Description/>
+            <Request/>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/v1/public/sale/dossiers/*/emotional-hook") and (request.verb =
+                "GET") and (organization.name == "ucs-us-g4c-pez-hvpc-01" or organization.name ==
+                "ucs-g4c-dmz-003-apigee-uat")
+            </Condition>
+        </Flow>
+        <Flow name="simulation">
+            <Description/>
+            <Request/>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/v1/public/sale/dossiers/*/simulation") and (request.verb =
+                "GET") and (organization.name == "ucs-us-g4c-pez-hvpc-01" or organization.name ==
+                "ucs-g4c-dmz-003-apigee-uat")
+            </Condition>
+        </Flow>
+    </Flows>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response>
+            <Step>
+                <Name>JS-setLoggingVariables</Name>
+            </Step>
+        </Response>
+    </PostFlow>
+    <PostClientFlow>
+        <Request/>
+        <Response>
+            <Step>
+                <Name>FC-logICT</Name>
+            </Step>
+            <Step>
+                <Name>FC-logSIEM</Name>
+            </Step>
+            <Step>
+                <Name>FC-logTS</Name>
+            </Step>
+        </Response>
+    </PostClientFlow>
+    <HTTPProxyConnection>
+        <BasePath>/api-f4p-s-orchestrator-funeral</BasePath>
+    </HTTPProxyConnection>
+    <RouteRule name="rr-target-de">
+        <TargetEndpoint>te-DE</TargetEndpoint>
+        <Condition>request.header.Host JavaRegex "(.*\.de.*)"</Condition>
+    </RouteRule>
+</ProxyEndpoint>
