@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+  <DefaultFaultRule name="all">
+    <AlwaysEnforce>true</AlwaysEnforce>
+    <Step>
+      <Name>FC-setCors</Name>
+    </Step>
+    <Step>
+      <Name>JS-setLoggingVariables</Name>
+    </Step>
+    <Condition>(error.status.code!=200) or (error.status.code!=201) or (error.status.code!=202) or (error.status.code!=203) or (error.status.code!=204)</Condition>
+  </DefaultFaultRule>
+  <FaultRules>
+    <FaultRule name="JTP-error">
+      <Step>
+        <Name>AM-inputError</Name>
+      </Step>
+      <Condition>(jsonattack.JTP-message.failed = true)</Condition>
+    </FaultRule>
+    <FaultRule name="JTP-card-ps-orchestrator-onlyerror">
+      <Step>
+        <Name>AM-inputError</Name>
+      </Step>
+      <Condition>(jsonattack.JTP-card-ps-orchestrator-only.failed = true)</Condition>
+    </FaultRule>
+    <FaultRule name="REP-error">
+      <Step>
+        <Name>AM-inputError</Name>
+      </Step>
+      <Condition>(regularexpressionprotection.REP-Generic-Threat-Protection.failed = true)</Condition>
+    </FaultRule>
+  </FaultRules>
+  <PreFlow name="PreFlow">
+    <Request>
+      <Step>
+        <Name>FC-securityChecks</Name>
+      </Step>
+      <Step>
+        <Name>AM-setSIEMIndex</Name>
+      </Step>
+    </Request>
+    <Response/>
+  </PreFlow>
+  <Flows>
+    <Flow name="api/v1/card-operation">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="api/v1/card-operation/{operationId}/lock">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/lock") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="api/v1/card-operation/{operationId}/unlock">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/unlock") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="api/v1/card-operation/{operationId}/suspension">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/suspension") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="api/v1/card-operation/{operationId}/reactivation">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/reactivation") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="api/v1/card-operation/{operationId}/reissue">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/reissue") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="api/v1/card-operation/{operationId}/pin/keys">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/pin/keys") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/abroad-transaction">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/abroad-transaction") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/limits">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/limits") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/geocontrol">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/geocontrol") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/duplicate">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/duplicate") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/skin-change">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/skin-change") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/support-change">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/support-change") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/renewal">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/renewal") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/activation">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/activation") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/revocation">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/revocation") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/merchants">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/merchants") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/challenge">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/challenge") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-challenge/{challengeId}/callback">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-challenge/*/callback") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/topup">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/topup") and (request.verb = "POST")</Condition>
+    </Flow>
+    <Flow name="api/v1/card-operation/{operationId}/actionable-locks">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/actionable-locks") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="api/v1/card-operation/{operationId}/actionable-operations">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/actionable-operations") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/limits">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/limits") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/geoareas">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/geoareas") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/countries">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/countries") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/tracking">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/tracking") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/supports">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/supports") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/support-details">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/support-details") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/merchants">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/merchants") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/challenge">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/challenge") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/challenge/{challengeId}">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/challenge/*") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{ndg}/challenge/{challengeId}">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/challenge/*") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{ndg}/challenges">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/challenges") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/customer/{ndg}/card/{cardId}/topup/checks">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/customer/*/card/*/topup/checks") and (request.verb = "GET")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*") and (request.verb = "PUT")</Condition>
+    </Flow>
+    <Flow name="/api/v1/card-operation/{operationId}/challenge">
+      <Description/>
+      <Request/>
+      <Response/>
+      <Condition>(proxy.pathsuffix MatchesPath "/api/v1/card-operation/*/challenge") and (request.verb = "PUT")</Condition>
+    </Flow>
+    <Flow name="notFound">
+      <Description/>
+      <Request>
+        <Step>
+          <Name>RF-flowNotFound</Name>
+        </Step>
+      </Request>
+      <Response/>
+    </Flow>
+  </Flows>
+  <PostFlow name="PostFlow">
+    <Request>
+      <Step>
+        <Name>JS-setLoggingVariables</Name>
+      </Step>
+      <Step>
+        <Condition>organization.name != "ucs-us-g4c-pez-hvpc-01"</Condition>
+        <Name>FC-setCors</Name>
+      </Step>
+    </Request>
+    <Response/>
+  </PostFlow>
+  <PostClientFlow>
+    <Request/>
+    <Response>
+      <Step>
+        <Name>FC-logICT</Name>
+      </Step>
+      <Step>
+        <Name>FC-logSIEM</Name>
+      </Step>
+      <Step>
+        <Name>FC-logTS</Name>
+      </Step>
+    </Response>
+  </PostClientFlow>
+  <HTTPProxyConnection>
+    <BasePath>/card-ps-orchestrator-lifecycle-be-global</BasePath>
+  </HTTPProxyConnection>
+  <RouteRule name="default">
+    <TargetEndpoint>default</TargetEndpoint>
+  </RouteRule>
+</ProxyEndpoint>
