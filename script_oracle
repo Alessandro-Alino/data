@@ -1,0 +1,165 @@
+/**
+ * Find the compute window
+ */
+const computeWindow = window; // Non ci sono iframe nel tuo HTML
+
+if (!computeWindow)
+    throw new Error("Failed to find window");
+
+// Selettore aggiornato per il pulsante Create basato sul tuo HTML
+const createBtn = computeWindow.document.querySelector("button.BaseButtonStyles_styles_base__jvi3ds0[aria-label='Create']");
+if (!createBtn || !createBtn.textContent.includes("Create"))
+    throw new Error("Failed to find 'Create' button");
+
+// Elementi per lo status bar
+const contentsElmt = computeWindow.document.querySelector("form[id='intent.compute.instances.create.review.formcontent']");
+if (!contentsElmt)
+    throw new Error("Failed to find contents element");
+
+const headerElmt = computeWindow.document.querySelector("h4.SubheadingStyles_base__opv46b0");
+if (!headerElmt)
+    throw new Error("Failed to find header element");
+
+/**
+ * Crea una nuova finestra per cloud.oracle.com e la aggiorna periodicamente
+ */
+const sessionWindow = window.open(
+    "https://cloud.oracle.com",
+    "_blank",
+    "height=400,width=400;popup=true"
+);
+
+// Crea la status bar
+const statusElmt = document.createElement("div");
+statusElmt.setAttribute("style", `
+    z-index: 9999999999999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    background-color: #00688c;
+    box-shadow: 0px 0px 10px -4px black;
+    white-space: break-spaces;
+    padding: 10px;
+`);
+
+/**
+ * Imposta l'altezza della status bar in base all'header
+ */
+const setStatusHeight = () => {
+    statusElmt.style.height = `${headerElmt.clientHeight}px`;
+};
+
+setStatusHeight();
+window.addEventListener("resize", setStatusHeight);
+document.body.prepend(statusElmt);
+
+const logStyle = color => `background-color: #222; color: ${color}`;
+
+console.clear();
+
+console.info(
+    "%c *** Oracle compute instance creation script STARTED *** ",
+    logStyle("#e0b414")
+);
+console.info(
+    "%c *** DO NOT CLOSE THE POPUP WINDOW! *** ",
+    logStyle("#ff4d4d")
+);
+console.info(
+    "%c *** Current Create button selector: button.BaseButtonStyles_styles_base__jvi3ds0[aria-label='Create'] ***",
+    logStyle("#f0dd99")
+);
+
+const currentTime = () => {
+    const now = new Date();
+    return now.toLocaleTimeString();
+};
+
+// Durata dell'intervallo in secondi (modificabile)
+let INTERVAL_DURATION = 30;
+
+const countdownDuration = () => Math.round(INTERVAL_DURATION);
+let countdown = countdownDuration();
+
+/**
+ * Funzione per simulare un click più affidabile
+ */
+const simulateClick = (element) => {
+    const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
+    mouseClickEvents.forEach(mouseEventType => {
+        element.dispatchEvent(new MouseEvent(mouseEventType, {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+            buttons: 1
+        }));
+    });
+};
+
+/**
+ * Intervallo per cliccare il pulsante 'Create' e aggiornare la finestra
+ */
+const clickInterval = setInterval(() => {
+    if (countdown > 0) {
+        statusElmt.style.backgroundColor = "#00688c";
+        statusElmt.innerHTML = `Next click in <b>${countdown} seconds</b>`;
+        countdown--;
+        return;
+    }
+
+    try {
+        // Aggiorna la finestra di sessione se esiste
+        if (sessionWindow && !sessionWindow.closed) {
+            sessionWindow.location.reload();
+        }
+        
+        // Effettua il click
+        simulateClick(createBtn);
+        statusElmt.style.backgroundColor = "#44bd50";
+        statusElmt.innerHTML = `Create clicked at ${currentTime()}`;
+        
+        console.log(
+            `%c *** Clicked 'Create' at ${currentTime()} *** `,
+            logStyle("#7cde6f")
+        );
+        
+        // Reimposta il countdown
+        countdown = countdownDuration();
+        
+    } catch (error) {
+        console.error(
+            `%c *** Error during click: ${error.message} *** `,
+            logStyle("#ff4d4d")
+        );
+        statusElmt.style.backgroundColor = "#ff4d4d";
+        statusElmt.innerHTML = `Error: ${error.message}`;
+        
+        // Riprova dopo 5 secondi in caso di errore
+        countdown = 5;
+    }
+}, 1000);
+
+// Funzione per fermare lo script
+function stopScript() {
+    clearInterval(clickInterval);
+    if (sessionWindow && !sessionWindow.closed) {
+        sessionWindow.close();
+    }
+    statusElmt.style.backgroundColor = "#ff4d4d";
+    statusElmt.innerHTML = `Script STOPPED at ${currentTime()}`;
+    console.log("%c *** Script STOPPED *** ", logStyle("#ff4d4d"));
+}
+
+// Aggiungi la funzione stopScript all'oggetto window per poterla chiamare dalla console
+window.stopScript = stopScript;
+
+console.info(
+    "%c *** To stop the script, call stopScript() from the console *** ",
+    logStyle("#f0dd99")
+);
